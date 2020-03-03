@@ -21,7 +21,10 @@ export class EditComponent implements OnInit {
       const item: any = {
         title: this.title,
         text: this.text,
-        isDone: false
+        isDone: false,
+        id: this.title.trim().replace(/\s+/g, ''),
+        isStartedTimer: false,
+        timerValue: ''
       };
       this.onAdd.emit(item);
 

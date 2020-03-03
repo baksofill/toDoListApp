@@ -14,7 +14,7 @@ export interface Item {
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent{
   title = 'my-todo-list';
   items: Item[];
 
@@ -24,8 +24,7 @@ export class AppComponent {
   }
 
   updateItems(item: Item) {
-    this.itemsDataService.addNewItem(item);
-    // this.items.unshift(item);
+    this.itemsDataService.setNewItem2LocalStorage(item);
   }
 
 }

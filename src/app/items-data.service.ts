@@ -1,24 +1,50 @@
 import { Injectable } from '@angular/core';
+// import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ItemsDataService {
-  items: any = [
-    {title: 'item 1', text: 'some text1', isDone: true, id: 1},
-    {title: 'item 2', text: 'some text2', isDone: true, id: 2},
-    {title: 'item 3', text: 'some text3', isDone: true, id: 3}
-  ];
+  items: any;
+  mockedData: any = {
+      title: 'Some mocked data',
+      text: 'Its just mocked text, in case if its just first load',
+      isDone: false,
+      id: 'Somemockeddata',
+      isStartedTimer: false,
+      timerValue: ''
+    };
 
   constructor() { }
 
   getItems(): any {
+    // todo: need to be impl as observable
+    if(localStorage.length > 0 ) {
+      this.getDataFromLocalStorage();
+    } else {
+      this.setNewItem2LocalStorage(this.mockedData);
+      this.getDataFromLocalStorage();
+    }
+
     return this.items;
   }
 
-  addNewItem(item): any {
-    this.items.unshift(item);
-    console.log('----->', this.items);
+  setNewItem2LocalStorage(newItem): void {
+    !this.items ? this.items = [] : console.log();
+    this.items.unshift(newItem);
+    localStorage.setItem(newItem.id, JSON.stringify(newItem));
+  }
+
+  getDataFromLocalStorage(): any {
+    let tempItems: any = [];
+    let keys = Object.keys(localStorage);
+    for(let key of keys) {
+      // todo: should be impl checking of raw data equal to type which we expect
+      tempItems.push(JSON.parse(localStorage.getItem(key)));
+      console.log(`${key}: ${localStorage.getItem(key)}`);
+    }
+
+    this.items = tempItems;
   }
 }
