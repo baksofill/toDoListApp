@@ -2,9 +2,9 @@
   <h2>{{item.title}}</h2>
   <p>{{item.text}}</p>
   <div class="timer">
-    <span>{{min}} : {{sec}}</span>
+    <span>{{timer}}</span>
     <button (click)="onStart()">Start</button>
-    <button (click)="onPause()">Pause</button>
+    <button (click)="onPause()">Pause/Continue</button>
     <button (click)="onClear()">Clear</button>
   </div>
 </div>

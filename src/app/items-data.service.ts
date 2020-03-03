@@ -12,8 +12,9 @@ export class ItemsDataService {
       text: 'Its just mocked text, in case if its just first load',
       isDone: false,
       id: 'Somemockeddata',
-      isStartedTimer: false,
-      timerValue: ''
+      isTimerInProgress: false,
+      whenWasStarted: '',
+      valueOnPause: ''
     };
 
   constructor() { }

@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { ItemsDataService } from './items-data.service';
 
-//todo: impl external interface in external dir
+//todo: remove to external dir
 export interface Item {
   title: string;
   text: string;
   idDone: boolean;
-  id?: number;
+  id: string;
+  isTimerInProgress: boolean;
+  whenWasStarted: string;
+  valueOnPause: string;
 }
 
 @Component({
@@ -21,7 +24,6 @@ export class AppComponent{
 
   constructor(private itemsDataService: ItemsDataService) {
     this.items = this.itemsDataService.getItems();
-    console.log(this.items);
   }
 
   updateItems(item: Item) {

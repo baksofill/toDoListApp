@@ -23,8 +23,9 @@ export class EditComponent implements OnInit {
         text: this.text,
         isDone: false,
         id: this.title.trim().replace(/\s+/g, ''),
-        isStartedTimer: false,
-        timerValue: ''
+        isTimerInProgress: false,
+        whenWasStarted: '',
+        valueOnPause: ''
       };
       this.onAdd.emit(item);
 
