@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ItemsDataService } from './items-data.service';
 
+//todo: impl external interface in external dir
 export interface Item {
   title: string;
   text: string;
