@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { ItemsDataService } from './items-data.service';
 
+//todo: remove to external dir
 export interface Item {
   title: string;
   text: string;
   idDone: boolean;
-  id?: number;
+  id: string;
+  isTimerInProgress: boolean;
+  whenWasStarted: string;
+  valueOnPause: string;
 }
 
 @Component({
@@ -14,18 +18,16 @@ export interface Item {
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent{
   title = 'my-todo-list';
   items: Item[];
 
   constructor(private itemsDataService: ItemsDataService) {
     this.items = this.itemsDataService.getItems();
-    console.log(this.items);
   }
 
   updateItems(item: Item) {
-    this.itemsDataService.addNewItem(item);
-    // this.items.unshift(item);
+    this.itemsDataService.setNewItem2LocalStorage(item);
   }
 
 }
