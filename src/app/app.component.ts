@@ -9,7 +9,7 @@ export interface Item {
   id: string;
   isTimerInProgress: boolean;
   whenWasStarted: string;
-  valueOnPause: string;
+  valueOnPause: number;
 }
 
 @Component({

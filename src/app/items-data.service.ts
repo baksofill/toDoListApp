@@ -31,9 +31,10 @@ export class ItemsDataService {
     return this.items;
   }
 
-  setNewItem2LocalStorage(newItem): void {
+  setNewItem2LocalStorage(newItem, isNotNew?:boolean): void {
+    debugger;
     !this.items ? this.items = [] : console.log();
-    this.items.unshift(newItem);
+    !isNotNew ? this.items.unshift(newItem) : console.log();
     localStorage.setItem(newItem.id, JSON.stringify(newItem));
   }
 
