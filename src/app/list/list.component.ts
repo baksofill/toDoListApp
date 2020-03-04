@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { ItemsDataService } from '../items-data.service';
 
 @Component({
   selector: 'app-list',
@@ -6,71 +7,50 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  timer: string = '00:00';
-  sec: string = '00';
-  min: string = '00';
+  timer: number = 0;
+  timerRef: any;
 
   @Input() item: any;
 
+  constructor(private itemsDataService: ItemsDataService){}
+
   ngOnInit(): void {
-    this.item.isTimerInProgress ? this.calcInitialValue(this.item.whenWasStarted) : console.log();
+    this.timer = this.item.valueOnPause || 0;
+    this.item.isTimerInProgress ? this.onStart() : console.log();
   }
 
   onStart(): void {
-    let newDate = new Date();
-    this.item.whenWasStarted = newDate;
-    console.log('------> Timer is Stared');
-    this.timer = '00:99'; // =)
-    //todo: impl working timer
-
-    // let sec = Number(this.sec);
-    // let min = Number(this.min);
-    //
-    // let timer = setInterval(function() {
-    //   debugger;
-    //   if (sec < 10) {
-    //     this.sec = "0" + sec++;
-    //   }
-    //   else {
-    //     this.sec = '00';
-    //   }
-    //   // if (min >= 59 && sec >=59 ) {
-    //   //   this.stopTimeSec(timer);
-    //   //   return true;
-    //   // }
-    //   // if (sec > 59) {
-    //   //   sec = 0;
-    //   //   min++;
-    //   // }
-    //   // if (min > 59) {
-    //   //   min = 0;
-    //   // }
-    // }, 1000);
+    let newDate = Date.now();
+    if(this.item.whenWasStarted == '') {
+      this.item.whenWasStarted = newDate;
+      this.item.isTimerInProgress = true;
+    }
+    this.itemsDataService.setNewItem2LocalStorage(this.item, true);
+    const startTime = this.item.whenWasStarted - (this.timer || 0);
+    this.timerRef = setInterval(() => {
+      this.timer = Math.round((Date.now() - startTime)/1000);
+    }, 1000);
   }
 
-  // stopTimerSec(timer) {
-  //   if (timer) {
-  //     clearInterval(timer);
-  //     return timer;
-  //   }
-  //   else return timer;
-  // }
-
   onPause(): void {
-    console.log('----> Timer on Pause');
-    //stopTimerSec(timer);
+    clearInterval(this.timerRef);
+
+    this.item.whenWasStarted = '';
+    this.item.isTimerInProgress = false;
+    this.item.valueOnPause = this.timer;
+    this.itemsDataService.setNewItem2LocalStorage(this.item, true);
   }
 
   onClear(): void {
-    this.timer = '00:00';
-    console.log('----> Timer on Cleared');
+    clearInterval(this.timerRef);
+    this.timer = 0;
+    this.item.whenWasStarted = '';
+    this.item.isTimerInProgress = false;
+    this.item.valueOnPause = this.timer;
+    this.itemsDataService.setNewItem2LocalStorage(this.item, true);
+
   }
 
-  calcInitialValue(whenWasStarted?): void {
-    //todo: calc initial value of timer
-    this.timer = 'reculc value';
-    this.onStart();
-  }
-
+  //todo: need to be impl continue method
   //todo: need to be impl edit method
 }
